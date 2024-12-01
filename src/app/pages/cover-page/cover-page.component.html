@@ -1,0 +1,122 @@
+<div class="container">
+
+    <button (click)="displayModal = true">Afficher le formulaire</button>
+
+    <div class="pg-content relative" id="pg-content">
+
+        <!-- <div class="rect1 absolute">
+                <div class="rect2 ">
+                    <div class="rect3 ">
+                    </div>
+                </div>
+            </div> -->
+
+        <svg id="cadre1" class="cadre1 absolute" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 619.88 899.57">
+            <defs>
+                <!-- <style>
+                        .cls-1 {
+                            fill: #00af4f;
+                        }
+                    </style> -->
+            </defs>
+            <path [attr.fill]="selectedColor" class="cls-1"
+                d="M21,9.31H11.31v880H608.1V9.31H21Zm582.27,4.84V884.46H16.15V14.15H603.26Z" />
+            <path [attr.fill]="selectedColor" class="cls-1"
+                d="M21,16.57H18.57V882H600.84V16.57H21Zm577.43,863H21V19H598.42Z" />
+            <path [attr.fill]="selectedColor" class="cls-1"
+                d="M610.52,4.47H6.47V894.14H612.94V4.47Zm0,14.52V891.72H8.89V6.89H610.52Z" />
+        </svg>
+
+        <div class="school-prof-name flex jcse">
+            <p id="school_name_display">{{coverPageData.school_name}}</p>
+            <p>Professeur : <span id="teacher_name_display">{{coverPageData.teacher_name}}</span></p>
+        </div>
+
+        <div class="field">
+            <p>EDUCATION PHYSIQUE ET SPORTIVE</p>
+        </div>
+
+        <div class="sport-img">
+            <img src="assets/img/at.jpg" alt="">
+        </div>
+
+        <div class="cradre2-container">
+            <div class="cadre2-wrapper relative">
+                <svg id="cadre2" data-name="Calque 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 494.51 150.14">
+                    <defs>
+                        <style>
+                            .cls-3 {
+                                fill: #ccc;
+                                fill-rule: evenodd;
+                            }
+
+                            .cls-4 {
+                                fill: none;
+                                stroke-linejoin: round;
+                                stroke-width: 1.81px;
+                            }
+                        </style>
+                    </defs>
+                    <path class="cls-3"
+                        d="M13.84,39.08a8.86,8.86,0,0,0,8.86-8.86,4.43,4.43,0,0,0-8.86,0ZM480.46,21.36a8.87,8.87,0,1,0-8.86-8.86,4.43,4.43,0,0,0,8.86,0Z" />
+                    <path [attr.stroke]="selectedColor" class="cls-4"
+                        d="M5.09,30.76A8.86,8.86,0,0,1,14,21.9H471.7V13a8.86,8.86,0,1,1,17.72,0V119.38a8.86,8.86,0,0,1-8.86,8.86H22.81v8.86a8.86,8.86,0,1,1-17.72,0ZM471.7,21.9h8.86A8.86,8.86,0,0,0,489.42,13m-8.86,8.86V13a4.43,4.43,0,0,1-8.86,0M14,39.62V30.76a4.43,4.43,0,0,1,8.86,0,8.86,8.86,0,0,1-17.72,0m17.72,0v97.48" />
+                </svg>
+                <span class="cadre2-text absolute">CAHIER DE PRESENCE ET DE NOTE</span>
+            </div>
+        </div>
+
+        <div class="p-footer flex jcsa mt-10">
+            <div class="group">
+                <p class="myText">Classe <span id="class_display">{{coverPageData.class}}</span></p>
+                <p class="myText">Groupe : <span id="group_name_display"
+                        [style.color]="selectedColor">{{coverPageData.group_name}}</span></p>
+            </div>
+            <div class="year">
+                <p class="myText">Année scolaire</p>
+                <p class="myText" id="year_year_display">{{coverPageData.year_year}}</p>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="color-picker">
+        <label class="inline" for="colorPicker">Choisissez une couleur pour le cadre: </label>
+        <input type="color" id="colorPicker" [(ngModel)]="selectedColor" (change)="onColorChange($event)">
+    </div>
+    <p>
+        <button class="btn" (click)="generatePdf()">Générer PDF</button>
+    </p>
+
+</div>
+
+
+<app-modal 
+*ngIf="displayModal" 
+[title]="'Formulaire d\'Information de l\'Ecole'" 
+[size]="'lg'" 
+[template]="modal"
+[displaySaveBtn]="true" 
+(saveData)="saveCoverPageData()" 
+(closeModal)="displayModal = false"></app-modal>
+<ng-template #modal>
+    <!-- <form (ngSubmit)="saveCoverPageData()"> -->
+    <form>
+        <label for="school_name">Ecole:</label><br>
+        <input type="text" id="school_name" [(ngModel)]="coverPageData.school_name" name="school_name"><br><br>
+
+        <label for="teacher_name">Professeur:</label><br>
+        <input type="text" id="teacher_name" [(ngModel)]="coverPageData.teacher_name" name="teacher_name"><br><br>
+
+        <label for="class">Classe:</label><br>
+        <input type="text" id="class" [(ngModel)]="coverPageData.class" name="class"><br><br>
+
+        <label for="group_name">Groupe:</label><br>
+        <input type="text" id="group_name" [(ngModel)]="coverPageData.group_name" name="group_name"><br><br>
+
+        <label for="year_year">Annéé scolaire:</label><br>
+        <input type="text" id="year_year" [(ngModel)]="coverPageData.year_year" name="year_year"><br><br>
+
+        <!-- <button type="submit">Enregistrer</button> -->
+    </form>
+</ng-template>

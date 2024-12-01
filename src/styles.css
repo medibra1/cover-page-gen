@@ -1,0 +1,12 @@
+/* You can add global styles to this file, and also import other style files */
+
+
+@font-face {
+    font-family: algerian;
+    src: url('assets/font/ALGERIA.ttf');
+}
+
+@font-face {
+    font-family: ntroman;
+    src: url('assets/font/times-new-roman/times-new-roman-bold.ttf');
+}
