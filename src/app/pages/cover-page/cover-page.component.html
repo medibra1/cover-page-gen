@@ -1,6 +1,7 @@
 <div class="container">
 
-    <button (click)="displayModal = true">Afficher le formulaire</button>
+    <button (click)="displayModal = true" style="margin: 0 3px 3px 0;">Afficher le formulaire</button>
+    <button style="background-color: rgb(247, 80, 80)" (click)="clearData()">Réinitialiser</button>
 
     <div class="pg-content relative" id="pg-content">
 
@@ -28,8 +29,8 @@
         </svg>
 
         <div class="school-prof-name flex jcse">
-            <p id="school_name_display">{{coverPageData.school_name}}</p>
-            <p>Professeur : <span id="teacher_name_display">{{coverPageData.teacher_name}}</span></p>
+            <p id="school_name_display">{{f['school_name'].value}}</p>
+            <p>Professeur : <span id="teacher_name_display">{{['teacher_name']}}</span></p>
         </div>
 
         <div class="field">
@@ -68,13 +69,13 @@
 
         <div class="p-footer flex jcsa mt-10">
             <div class="group">
-                <p class="myText">Classe <span id="class_display">{{coverPageData.class}}</span></p>
+                <p class="myText">Classe <span id="class_display">{{f['class'].value}}</span></p>
                 <p class="myText">Groupe : <span id="group_name_display"
-                        [style.color]="selectedColor">{{coverPageData.group_name}}</span></p>
+                        [style.color]="selectedColor">{{f['group_name'].value}}</span></p>
             </div>
             <div class="year">
                 <p class="myText">Année scolaire</p>
-                <p class="myText" id="year_year_display">{{coverPageData.year_year}}</p>
+                <p class="myText" id="year_year_display">{{f['year_year'].value}}</p>
             </div>
         </div>
 
@@ -101,21 +102,21 @@
 (closeModal)="displayModal = false"></app-modal>
 <ng-template #modal>
     <!-- <form (ngSubmit)="saveCoverPageData()"> -->
-    <form>
+    <form [formGroup]="headerForm">
         <label for="school_name">Ecole:</label><br>
-        <input type="text" id="school_name" [(ngModel)]="coverPageData.school_name" name="school_name"><br><br>
+        <input type="text" id="school_name" formControlName="school_name" name="school_name"><br><br>
 
         <label for="teacher_name">Professeur:</label><br>
-        <input type="text" id="teacher_name" [(ngModel)]="coverPageData.teacher_name" name="teacher_name"><br><br>
+        <input type="text" id="teacher_name" formControlName="teacher_name"  name="teacher_name"><br><br>
 
         <label for="class">Classe:</label><br>
-        <input type="text" id="class" [(ngModel)]="coverPageData.class" name="class"><br><br>
+        <input type="text" id="class" formControlName="class"  name="class"><br><br>
 
         <label for="group_name">Groupe:</label><br>
-        <input type="text" id="group_name" [(ngModel)]="coverPageData.group_name" name="group_name"><br><br>
+        <input type="text" id="group_name" formControlName="group_name" name="group_name"><br><br>
 
         <label for="year_year">Annéé scolaire:</label><br>
-        <input type="text" id="year_year" [(ngModel)]="coverPageData.year_year" name="year_year"><br><br>
+        <input type="text" id="year_year" formControlName="year_year" name="year_year"><br><br>
 
         <!-- <button type="submit">Enregistrer</button> -->
     </form>

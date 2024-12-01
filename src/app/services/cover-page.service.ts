@@ -19,7 +19,7 @@ export class CoverPageService {
  schoolYear = `${this.currentYear}-${this.currentYear + 1}`;
 
   private readonly storageKey = 'coverPageData';
-  private defaultData: ICoverPageData = {
+  defaultData: ICoverPageData = {
     school_name: 'Collège Moderne Bessio De Lambert',
     teacher_name: 'Mme CISSE',
     class: '5ème 1',
@@ -56,6 +56,5 @@ export class CoverPageService {
     clearData(): void {
       localStorage.removeItem(this.storageKey);
     }
-
 
 }

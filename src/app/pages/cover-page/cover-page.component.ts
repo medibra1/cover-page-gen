@@ -3,7 +3,7 @@ import { Component, inject } from '@angular/core';
 import { jsPDF } from 'jspdf';
 
 import html2canvas from 'html2canvas';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ModalComponent } from '../../components/modal/modal.component';
 import { CommonModule } from '@angular/common';
 import { CoverPageService, ICoverPageData } from '../../services/cover-page.service';
@@ -11,39 +11,57 @@ import { CoverPageService, ICoverPageData } from '../../services/cover-page.serv
 @Component({
   selector: 'app-cover-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, ModalComponent],
+  imports: [CommonModule, FormsModule, ModalComponent, ReactiveFormsModule],
   templateUrl: './cover-page.component.html',
   styleUrl: './cover-page.component.css',
 })
 export class CoverPageComponent {
   selectedColor = '#00af4f';
   displayModal = false;
-  coverPageData: ICoverPageData;  // To store retrieved data from local storage
   coverPageService =  inject(CoverPageService);
+
+  formBuilder = inject(FormBuilder);
+  headerForm: FormGroup;
 
   ngOnInit(): void {
     // Retrieve data from local storage or use default values
-    this.coverPageData = this.coverPageService.getData();
-    console.log('Les info cover page: ', this.coverPageData);
+    this.initializeForm(this.coverPageService.getData())
+    console.log('Les info cover page: ', this.coverPageService.getData());
+  }
+
+  get f() {
+    return this.headerForm.controls;
+  }
+
+  initializeForm(headerData: ICoverPageData): void {
+    this.headerForm = this.formBuilder.group({
+      school_name: headerData.school_name,
+      teacher_name: headerData.teacher_name,
+      class: headerData.class,
+      group_name : headerData.group_name,
+      year_year : headerData.year_year,
+      color: headerData.color
+    });
   }
 
   // Save the data to local storage when called
   saveCoverPageData(): void {
-    console.log('Data to save: ', this.coverPageData);
-    this.coverPageService.saveData(this.coverPageData);
+    console.log('Data to save: ', this.headerForm.value);
+    this.coverPageService.saveData(this.headerForm.value);
     this.displayModal = false;
-  }
-
-  // Clear data in local storage if needed
-  clearCoverPageData(): void {
-    this.coverPageService.clearData();
-    this.coverPageData = this.coverPageService.getData(); // Reload default data
   }
 
   // Fonction pour changer la couleur lorsque l'utilisateur en sélectionne une nouvelle
   onColorChange(event: Event) {
     const input = event.target as HTMLInputElement;
     this.selectedColor = input.value;
+  }
+
+  clearData() {
+    if( confirm('Voulez-vous réinitialiser les données ?') ) {
+      this.coverPageService.clearData();
+      this.initializeForm(this.coverPageService.defaultData)
+    }
   }
 
   // function cleanProfessorName(name) {
@@ -57,9 +75,9 @@ export class CoverPageComponent {
 
   generateFileName() {
     // Récupérer les valeurs du formulaire
-    const className = this.coverPageData.class;
-    const groupName = this.coverPageData.group_name;
-    const teacherName = this.coverPageData.teacher_name;
+    const className = this.f['class'].value;
+    const groupName = this.f['group_name'].value;
+    const teacherName = this.f['teacher_name'].value;
 
     // Nettoyer le nom du professeur pour retirer "M." ou "Mme", enlever les espaces, et remplacer les points
     // const cleanedTeacherName = cleanProfessorName(teacherName);
@@ -148,4 +166,5 @@ export class CoverPageComponent {
     a.click(); // Simuler le clic sur le lien pour déclencher le téléchargement
     document.body.removeChild(a); // Supprimer le lien après le clic
   }
+
 }
